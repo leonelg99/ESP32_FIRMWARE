@@ -44,8 +44,8 @@ void createTasks(){
 
 //Camara Task
 /*static void conexionTask (void *parameter){
-  camaraSetup();
-  camaraStart();
+  cameraSetup();
+  cameraStart();
 }*/
 
 //Server Task
