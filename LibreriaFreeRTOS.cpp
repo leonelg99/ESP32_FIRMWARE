@@ -4,7 +4,7 @@
 //Function Prototypes
 static void conexionTask (void *);
 static void uartTask (void *);
-static void camTask (void *)
+static void camTask (void *);
 
 //String variable to recieve message by wifi 
 String messageReceived;

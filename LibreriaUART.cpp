@@ -12,7 +12,7 @@ void uartStart(){
       msg=Serial.readStringUntil('\n');
       saveInBufferUART(msg);
     }
-    if(getCommand(*msg)){
+    if(getCommand(&msg)){
       Serial.println(msg);
     }
     vTaskDelay(pdMS_TO_TICKS(1500));
