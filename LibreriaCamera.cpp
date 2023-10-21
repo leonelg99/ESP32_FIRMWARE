@@ -100,5 +100,5 @@ void cameraSetup(){
 }
 
 void cameraStart(){
-  startCameraServer();
+  //startCameraServer();
 }
