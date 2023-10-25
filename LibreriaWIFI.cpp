@@ -55,10 +55,8 @@ void startWiFi(){
 }
 
 WiFiClient getClient(){
-  while(1){
-    WiFiClient client = server.available();
-    if(client) return client;
-  }
+  WiFiClient client = server.available();
+  if(client) return client;
 }
 
 void serverSetup(){
