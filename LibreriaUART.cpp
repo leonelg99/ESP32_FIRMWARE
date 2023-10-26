@@ -10,11 +10,11 @@ void uartStart(){
   while(1){
     if(Serial.available()){
       msg=Serial.readStringUntil('\n');
-      saveInBufferUART(msg);
+      saveInBufferWIFI(msg);
     }
     if(getCommand(&msg)){
       Serial.println(msg);
     }
-    vTaskDelay(pdMS_TO_TICKS(1500));
+    vTaskDelay(2);
   }
 }

@@ -80,7 +80,7 @@ void serverExecute(){
       message_aux = client.readStringUntil('\n');  
       processMessage(message_aux, &resp, &message);
       if (resp.equals("cmd")){
-        client.print("Es un comando: "+resp);
+        client.print("Eco: " + message);
         saveInBufferUART(message);
       }
       else {
@@ -96,7 +96,7 @@ void serverExecute(){
      }
      client.stop();
     }
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    vTaskDelay(2);
   }
 } 
 

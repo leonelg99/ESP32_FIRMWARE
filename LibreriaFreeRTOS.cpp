@@ -18,7 +18,7 @@ void createTasks(){
     "Server",
     STACK_SIZE_SERVER,
     NULL,
-    2,
+    1,
     NULL,
     0
   );
