@@ -21,6 +21,10 @@ IPAddress local_ip(192,168,4,1);
 IPAddress gateway(192,168,4,1);
 IPAddress subnet(255,255,255,0);
 
+
+const char* HOST_IP;
+const uint16_t HOST_PORT = 2000;
+
 /*
 const int   channel        = 10;                        // WiFi Channel number between 1 and 13
 const bool  hide_SSID      = false;                     // To disable SSID broadcast -> SSID will not appear in a basic WiFi scan
@@ -54,6 +58,23 @@ void startWiFi(){
   }
 }
 
+void getIPclient(){
+  while(1){
+    
+    WiFiClient client = server.available();
+
+    if(client){
+      String aux = client.readStringUntil('\n');
+      char* HOST_IP_cstr = (char*)malloc(HOST_IP.length() + 1);
+      if (HOST_IP_cstr) {
+        HOaux.toCharArray(HOST_IP_cstr, HOST_IP.length() + 1);
+        free(HOST_IP_cstr);
+      break;
+    }
+    delay(100);
+  }
+}
+
 WiFiClient getClient(){
   WiFiClient client = server.available();
   if(client) return client;
@@ -72,7 +93,7 @@ void serverSetup(){
   Serial.println("Server started");
 
 }
-
+String MSG;
 void serverExecute(){
   while(1){
     WiFiClient client= getClient();
@@ -96,6 +117,13 @@ void serverExecute(){
      }
      client.stop();
     }
+    if(getMsg(&MSG)){
+      if (client.connect(HOST_IP, HOST_PORT,10)) {
+        client.print("Hola, este es un mensaje desde el ESP32." + MSG);
+        client.stop();
+      }else saveInBufferWIFI(MSG);
+    }
+
     vTaskDelay(2);
   }
 } 

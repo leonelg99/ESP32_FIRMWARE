@@ -9,3 +9,4 @@ void startWiFi(void);
 void serverSetup(void);
 void serverExecute(void);
 WiFiClient getClient(void);
+void getIPclient(void);

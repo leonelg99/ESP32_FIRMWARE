@@ -5,6 +5,7 @@
 void setup() {
   initSemaphores();
   startWiFi();
+  getIPclient();
   createTasks();
 }
 
