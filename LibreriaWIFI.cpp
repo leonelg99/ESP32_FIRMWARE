@@ -17,6 +17,7 @@ const char* ssid = "ESP32";
 const char* password = "esp32123";
 
 //Seting router 
+IPAddress staticIP(192, 168, 4, 2); // Cambia esta IP según tus necesidades
 IPAddress local_ip(192,168,4,1);
 IPAddress gateway(192,168,4,1);
 IPAddress subnet(255,255,255,0);
@@ -56,23 +57,7 @@ void startWiFi(){
       delay(500);
     };
   }
-}
-
-void getIPclient(){
-  while(1){
-    
-    WiFiClient client = server.available();
-
-    if(client){
-      String aux = client.readStringUntil('\n');
-      char* HOST_IP_cstr = (char*)malloc(HOST_IP.length() + 1);
-      if (HOST_IP_cstr) {
-        HOaux.toCharArray(HOST_IP_cstr, HOST_IP.length() + 1);
-        free(HOST_IP_cstr);
-      break;
-    }
-    delay(100);
-  }
+ 
 }
 
 WiFiClient getClient(){
@@ -112,7 +97,11 @@ void serverExecute(){
           // executeCam();
         }
         else{
-         client.print("ESP - Error: comando no valido.");
+          if(resp.equals("get")){
+              if(getMsg(&MSG))
+                client.print(MSG);
+              else client.print("");
+          } else client.print("ESP - Error: comando no valido.");
         }
      }
      client.stop();
