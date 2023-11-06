@@ -98,8 +98,15 @@ void serverExecute(){
         }
         else{
           if(resp.equals("get")){
-              if(getMsg(&MSG))
-                client.print(MSG);
+              if(getMsg(&MSG)){
+                digitalWrite(ledPin,HIGH);
+                delay(500);
+                digitalWrite(ledPin,LOW);
+                delay(500);
+                digitalWrite(ledPin,HIGH);
+                delay(500);
+                digitalWrite(ledPin,LOW);
+                client.print(MSG);}
               else client.print("");
           } else client.print("ESP - Error: comando no valido.");
         }

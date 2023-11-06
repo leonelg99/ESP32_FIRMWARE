@@ -50,12 +50,10 @@ void createTasks(){
 
 //Server Task
 static void conexionTask (void *parameter){
-  serverSetup();
   serverExecute();
 }
 
 //UART Task
 static void uartTask (void *parameter){
-  uartSetup();
   uartStart();
 }

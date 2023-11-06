@@ -4,10 +4,11 @@
 
 void setup() {
   initSemaphores();
+  uartSetup();
   startWiFi();
+  serverSetup();
   createTasks();
 }
-
 void loop() {
 
 }
