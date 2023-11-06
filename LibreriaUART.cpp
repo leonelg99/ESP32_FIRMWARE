@@ -1,6 +1,6 @@
 #include "LibreriaUART.h"
 
-#define ledPin 2
+#define ledPin 4
 String msg;
 
 void uartSetup(){
@@ -13,12 +13,13 @@ void uartStart(){
     if(Serial.available()){
       digitalWrite(ledPin,HIGH);
       msg=Serial.readStringUntil('\n');
+      Serial.print(msg);
       saveInBufferWIFI(msg);
       digitalWrite(ledPin,LOW);
     }
     if(getCommand(&msg)){
       Serial.println(msg);
     }
-    vTaskDelay(2);
+    vTaskDelay(5);
   }
 }

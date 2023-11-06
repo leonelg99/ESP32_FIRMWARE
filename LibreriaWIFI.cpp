@@ -1,6 +1,6 @@
 #include "LibreriaWIFI.h"
 
-#define ledPin 2
+#define ledPin 4
 
 //Custom data types
 struct Command
