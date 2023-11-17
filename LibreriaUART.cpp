@@ -11,15 +11,15 @@ void uartSetup(){
 void uartStart(){
   while(1){
     if(Serial.available()){
-      digitalWrite(ledPin,HIGH);
       msg=Serial.readStringUntil('\n');
-      Serial.print(msg);
       saveInBufferWIFI(msg);
-      digitalWrite(ledPin,LOW);
     }
     if(getCommand(&msg)){
+      digitalWrite(ledPin,HIGH);
       Serial.println(msg);
+      digitalWrite(ledPin,LOW);
     }
-    vTaskDelay(5);
+    msg="";
+    vTaskDelay(10);
   }
 }

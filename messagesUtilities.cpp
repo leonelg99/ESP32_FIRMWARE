@@ -67,6 +67,7 @@ bool getCommand(String *cmd){
     if(uartFlag){
       uartFlag--;
       msg=bufferUART[indexUART_tx];
+      bufferUART[indexUART_tx]="";
       indexUART_tx++;
       updateBufferUART();
       exito=1;
@@ -139,6 +140,7 @@ bool saveInBufferWIFI(String msg){
       bufferWIFI[indexWIFI_rx]=msg;
       indexWIFI_rx++;
       wifiFlag++;
+      //updateBufferWIFI();
       error=0;
     }
     xSemaphoreGive(semWIFI);

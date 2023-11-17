@@ -99,13 +99,6 @@ void serverExecute(){
         else{
           if(resp.equals("get")){
               if(getMsg(&MSG)){
-                digitalWrite(ledPin,HIGH);
-                delay(500);
-                digitalWrite(ledPin,LOW);
-                delay(500);
-                digitalWrite(ledPin,HIGH);
-                delay(500);
-                digitalWrite(ledPin,LOW);
                 client.print(MSG);}
               else client.print("");
           } else client.print("ESP - Error: comando no valido.");
@@ -113,13 +106,6 @@ void serverExecute(){
      }
      client.stop();
     }
-    if(getMsg(&MSG)){
-      if (client.connect(HOST_IP, HOST_PORT,10)) {
-        client.print("Hola, este es un mensaje desde el ESP32." + MSG);
-        client.stop();
-      }else saveInBufferWIFI(MSG);
-    }
-
     vTaskDelay(2);
   }
 } 

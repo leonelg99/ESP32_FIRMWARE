@@ -18,7 +18,7 @@ void setup() {
 }
 String pepe;
 void loop() {
- /* if(Serial.available() > 0){
+ /*if(Serial.available() > 0){
       digitalWrite(ledPin,HIGH);
       delay(200);
       pepe=Serial.readStringUntil('\n');
