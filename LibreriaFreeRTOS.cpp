@@ -4,15 +4,19 @@
 //Function Prototypes
 static void conexionTask (void *);
 static void uartTask (void *);
-static void camTask (void *);
-
-//String variable to recieve message by wifi 
-String messageReceived;
-
-
+static void videoTask (void *);
 
 //Function to Create all the main task
 void createTasks(){
+  xTaskCreatePinnedToCore(
+    videoTask,
+    "CAMARA",
+    STACK_SIZE_CAM,
+    NULL,
+    1,
+    NULL,
+    1
+  );
   xTaskCreatePinnedToCore(
     conexionTask,
     "Server",
@@ -31,25 +35,17 @@ void createTasks(){
     NULL,
     0
   );
-  /*xTaskCreatePinnedToCore(
-    camTask,
-    "CAMARA",
-    STACK_SIZE_CAM,
-    NULL,
-    1,
-    NULL,
-    1
-  );*/
+  
 }
 
 //Camara Task
-/*static void conexionTask (void *parameter){
-  cameraSetup();
-  cameraStart();
-}*/
+static void videoTask (void *parameter){
+  cameraExecute();
+}
 
 //Server Task
 static void conexionTask (void *parameter){
+
   serverExecute();
 }
 

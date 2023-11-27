@@ -5,8 +5,8 @@
 #include "LibreriaUART.h"
 #include "LibreriaCamera.h"
 
-#define STACK_SIZE_SERVER 10000 //4KB
-#define STACK_SIZE_UART 10000   //4KB
-#define STACK_SIZE_CAM 10000    //TO LOW FOR CAM
+#define STACK_SIZE_SERVER 10000   //4KB
+#define STACK_SIZE_UART   10000   //4KB
+#define STACK_SIZE_CAM    400000   //TO LOW FOR CAM
 
 void createTasks(void);

@@ -1,5 +1,9 @@
 #include "LibreriaCamera.h"
 
+const int camPort = 12345;
+
+//WebServer server2(camPort);
+
 void setupLedFlash(int pin);
 
 void cameraSetup(){
@@ -89,16 +93,22 @@ void cameraSetup(){
 #if defined(LED_GPIO_NUM)
   setupLedFlash(LED_GPIO_NUM);
 #endif
+ // server2.on("/",HTTP_GET,[](AsyncWebServerReuest *request));
+  //server2.begin();
+  Serial.print("Cam Server Initialize: ");
+  Serial.print(WiFi.softAPIP());
+  Serial.println();
 
+ // startCameraServer();
 
-
-  /*
-  Serial.print("Camera Ready! Use 'http://");
-  Serial.print(WiFi.localIP());
-  Serial.println("' to connect");
-  */
 }
 
-void cameraStart(){
+void cameraExecute(){
+  digitalWrite(LED_GPIO_NUM,HIGH);
+  Serial.println("WTF!");
+  delay(500);
+  digitalWrite(LED_GPIO_NUM,LOW);
+  
   //startCameraServer();
+  //Serial.println("sc-iniciado!");
 }

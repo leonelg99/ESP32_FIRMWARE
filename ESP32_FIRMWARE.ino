@@ -9,22 +9,13 @@ void setup() {
   uartSetup();
   startWiFi();
   serverSetup();
+  cameraSetup();
+  Serial.println("Hola");
   createTasks();
- /* Serial.begin(115200);
-  pinMode(ledPin,OUTPUT);
-  digitalWrite(ledPin,HIGH);
-  delay(1000);
-  digitalWrite(ledPin,LOW);*/
+  Serial.println("Pues llegue!");
+  
 }
-String pepe;
+
 void loop() {
- /*if(Serial.available() > 0){
-      digitalWrite(ledPin,HIGH);
-      delay(200);
-      pepe=Serial.readStringUntil('\n');
-      Serial.print(pepe);
-      //saveInBufferWIFI(pepe);
-      digitalWrite(ledPin,LOW);
-      delay(500);
-    }*/
+ 
 }
