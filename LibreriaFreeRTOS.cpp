@@ -40,7 +40,8 @@ void createTasks(){
 
 //Camara Task
 static void videoTask (void *parameter){
-  cameraExecute();
+  //Serial.print("V");
+  //cameraExecute();
 }
 
 //Server Task

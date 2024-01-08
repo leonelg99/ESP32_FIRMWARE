@@ -1,1 +1,0 @@
-void startCameraServer(void);
