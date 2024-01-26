@@ -67,18 +67,18 @@ WiFiClient getClient(){
 
 void serverSetup(){
   //initSemaphores();
-  server.begin();
-  Serial.println("\nConnecting");
+  //server.begin();
+  //Serial.println("\nConnecting");
 
-  IPAddress myIP = WiFi.softAPIP();
-  Serial.print("AP IP address: ");
-  Serial.println(myIP);
+  //PAddress myIP = WiFi.softAPIP();
+  //Serial.print("AP IP address: ");
+  //Serial.println(myIP);
   server.begin();
 
-  Serial.println("Server started");
+  //Serial.println("Server started");
 
 }
-String MSG;
+String MSG="";
 void serverExecute(){
   while(1){
     WiFiClient client= getClient();
@@ -86,7 +86,6 @@ void serverExecute(){
       message_aux = client.readStringUntil('\n');  
       processMessage(message_aux, &resp, &message);
       if (resp.equals("cmd")){
-        client.print("Eco: " + message);
         saveInBufferUART(message);
       }
       else {
@@ -99,8 +98,8 @@ void serverExecute(){
         else{
           if(resp.equals("get")){
               if(getMsg(&MSG)){
-                client.print(MSG);}
-              else client.print("");
+                client.print(MSG);
+              } else client.print("");
           } else client.print("ESP - Error: comando no valido.");
         }
      }

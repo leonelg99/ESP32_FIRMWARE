@@ -1,6 +1,6 @@
 #include "messagesUtilities.h"
 #define MAX 15
-
+#define ledPin 4
 //Buffers WIFI y UART
 String bufferWIFI[MAX];
 int indexWIFI_rx=0;
@@ -56,6 +56,12 @@ void processCamMessage(String message, String *cmd, String *value, String *value
   *value2 = message.substring(ind2+1, '\n');
 }
 
+void initBuffers(){
+  for(uint8_t i=0;i<MAX;i++){
+    bufferWIFI[i]="";
+    bufferUART[i]="";
+  }
+}
 
 /*BUFFER UART DRIVERS*/
 
@@ -110,12 +116,15 @@ bool getMsg(String *msg){
   String str;
   if(xSemaphoreTake(semWIFI,(TickType_t)5)==pdTRUE){
     if(wifiFlag){
+      digitalWrite(ledPin,HIGH);
       wifiFlag--;
       str=bufferWIFI[indexWIFI_tx];
       indexWIFI_tx++;
       updateBufferWIFI();
       exito=1;
       *msg=str;
+      delay(500);
+      digitalWrite(ledPin,HIGH);
     }
     xSemaphoreGive(semWIFI);
   }

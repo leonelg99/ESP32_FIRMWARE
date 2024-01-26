@@ -9,3 +9,4 @@ bool saveInBufferUART(String);
 bool saveInBufferWIFI(String);
 bool getCommand(String *);
 bool getMsg(String *);
+void initBuffers(void);

@@ -40,13 +40,13 @@ void cameraSetup(){
   config.pin_sscb_scl = SIOC_GPIO_NUM;
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
-  config.xclk_freq_hz = 20000000;
+  config.xclk_freq_hz = 32000000;
   config.pixel_format = PIXFORMAT_JPEG; 
   
   if(psramFound()){
-    config.frame_size = FRAMESIZE_UXGA;
-    config.jpeg_quality = 10;
-    config.fb_count = 2;
+    config.frame_size = FRAMESIZE_SVGA;
+    config.jpeg_quality = 5;
+    config.fb_count = 3;
   } else {
     config.frame_size = FRAMESIZE_SVGA;
     config.jpeg_quality = 12;
@@ -56,7 +56,7 @@ void cameraSetup(){
   // Camera init
   esp_err_t err = esp_camera_init(&config);
   if (err != ESP_OK) {
-    Serial.printf("Camera init failed with error 0x%x", err);
+    //Serial.printf("Camera init failed with error 0x%x", err);
     return;
   }
   
@@ -79,7 +79,7 @@ static esp_err_t stream_handler(httpd_req_t *req){
   while(true){
     fb = esp_camera_fb_get();
     if (!fb) {
-      Serial.println("Camera capture failed");
+      //Serial.println("Camera capture failed");
       res = ESP_FAIL;
     } else {
       if(fb->width > 400){
@@ -88,7 +88,7 @@ static esp_err_t stream_handler(httpd_req_t *req){
           esp_camera_fb_return(fb);
           fb = NULL;
           if(!jpeg_converted){
-            Serial.println("JPEG compression failed");
+            //Serial.println("JPEG compression failed");
             res = ESP_FAIL;
           }
         } else {
@@ -125,7 +125,7 @@ static esp_err_t stream_handler(httpd_req_t *req){
 
 void cameraExecute(){
   httpd_config_t config = HTTPD_DEFAULT_CONFIG();
-  config.server_port = 80;
+  config.server_port = 8020;
 
   httpd_uri_t index_uri = {
     .uri       = "/",
