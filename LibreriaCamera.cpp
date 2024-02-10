@@ -11,12 +11,31 @@ static const char* _STREAM_CONTENT_TYPE = "multipart/x-mixed-replace;boundary=" 
 static const char* _STREAM_BOUNDARY = "\r\n--" PART_BOUNDARY "\r\n";
 static const char* _STREAM_PART = "Content-Type: image/jpeg\r\nContent-Length: %u\r\n\r\n";
 
+//Constants and variables for the camera
+  // 10 –> UXGA(1600×1200)
+  // 9 –> SXGA(1280×1024)
+  // 8 –> XGA(1024×768)
+  // 7 –> SVGA(800×600)
+  // 6 –> VGA(640×480)
+  // 5 — CIF(400×296)
+  // 4 –> QVGA(320×240)
+  // 3 –> HQVGA(240×176)
+  // 0 –> QQVGA(160×120)
+const int videoFramesizeUXGA = 10;
+const int videoFramesizeSVGA = 7;
+const int videoQualityLow = 12;
+const int videoQualityHigh = 10;
+int framesize = videoFramesizeSVGA;
+
 httpd_handle_t stream_httpd = NULL;
 
 void setupLedFlash(int);
 
 static esp_err_t stream_handler(httpd_req_t *);
 
+//This functions is used for the setup of the camera connected to the ESP32-CAM
+//It initializes the camera with the predefined configuration, such as pins, camera frame size and quality.
+//Also, it handles any initialization errors.
 void cameraSetup(){
 
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
@@ -47,10 +66,12 @@ void cameraSetup(){
     config.frame_size = FRAMESIZE_SVGA;
     config.jpeg_quality = 5;
     config.fb_count = 3;
+    framesize = FRAMESIZE_SVGA;
   } else {
     config.frame_size = FRAMESIZE_SVGA;
     config.jpeg_quality = 12;
     config.fb_count = 1;
+    framesize = FRAMESIZE_SVGA;
   }
   
   // Camera init
@@ -64,6 +85,9 @@ void cameraSetup(){
 
 }
 
+//This function streams video data from the camera over HTTP. 
+//It continuously captures frames, converts them to JPEG and sends them as an HTTP response. 
+//It also handles errors and ensures proper content type settings. 
 static esp_err_t stream_handler(httpd_req_t *req){
   camera_fb_t * fb = NULL;
   esp_err_t res = ESP_OK;
@@ -123,6 +147,7 @@ static esp_err_t stream_handler(httpd_req_t *req){
   return res;
 }
 
+//This function is used to execute the camera using port 8020
 void cameraExecute(){
   httpd_config_t config = HTTPD_DEFAULT_CONFIG();
   config.server_port = 8020;
@@ -138,4 +163,22 @@ void cameraExecute(){
   if (httpd_start(&stream_httpd, &config) == ESP_OK) {
     httpd_register_uri_handler(stream_httpd, &index_uri);
   }
+}
+
+//This functions is used to change the camera's resolution as required.
+//It toggles between medium (SVGA) and high resolution (UXGA)
+ void changeResolution(){    
+  int int_framesize = videoFramesizeSVGA;
+  int int_quality = videoQualityLow;
+  if (framesize = videoFramesizeSVGA) {
+    int_framesize = videoFramesizeUXGA;
+    int_quality = videoQualityHigh;
+  } else {
+    int_framesize = videoFramesizeSVGA;
+    int_quality = videoQualityLow;
+  }
+  sensor_t * s = esp_camera_sensor_get();
+  s->set_framesize(s, (framesize_t)int_framesize);
+  //s->set_framesize(s, FRAMESIZE_SVGA);
+  s->set_quality(s, int_quality);
 }

@@ -19,12 +19,13 @@ SemaphoreHandle_t semUART,semWIFI;
 static void updateBufferWIFI(void);
 static void updateBufferUART(void);
 
-
+//This function is used to create a semaphore and return it
 SemaphoreHandle_t createSemaphore(){
   SemaphoreHandle_t semaphore = xSemaphoreCreateBinary();
   return semaphore;
 }
 
+//Initialize semaphores
 void initSemaphores(){
   semUART = createSemaphore();
   if(semUART != NULL){
@@ -37,6 +38,8 @@ void initSemaphores(){
 
 }
 
+//This function is used to process the message received 
+//It returns who is the responsible and the command
 void processMessage(String message_aux, String *resp, String *message){
   int ind1; // : location
   ind1 = message_aux.indexOf(':');  //finds location of first :
@@ -56,6 +59,7 @@ void processCamMessage(String message, String *cmd, String *value, String *value
   *value2 = message.substring(ind2+1, '\n');
 }
 
+//This function is used to initialize the buffers
 void initBuffers(){
   for(uint8_t i=0;i<MAX;i++){
     bufferWIFI[i]="";
@@ -84,7 +88,7 @@ bool getCommand(String *cmd){
   return exito;
 }
 
-//Actualizar Indices de WIFI
+//Update bufferUART's indexes
 static void updateBufferUART(){
   if(indexUART_rx>=MAX)
     indexUART_rx=0;
@@ -131,7 +135,7 @@ bool getMsg(String *msg){
   return exito;
 }
 
-//Actualizar Indices de WIFI
+//Update bufferWIFI's indexes
 static void updateBufferWIFI(){
   if(indexWIFI_rx>=MAX){
     indexWIFI_rx=0;

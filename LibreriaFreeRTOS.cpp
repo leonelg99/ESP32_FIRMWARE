@@ -8,6 +8,8 @@ static void videoTask (void *);
 
 //Function to Create all the main task
 void createTasks(){
+  
+  //The Task for the camera is going to run in core 1
   xTaskCreatePinnedToCore(
     videoTask,
     "CAMARA",
@@ -17,6 +19,8 @@ void createTasks(){
     NULL,
     1
   );
+
+  //The Task for the server is going to run in core 0
   xTaskCreatePinnedToCore(
     conexionTask,
     "Server",
@@ -26,6 +30,8 @@ void createTasks(){
     NULL,
     0
   );
+
+  //The Task for the UART is going to run in core 0
   xTaskCreatePinnedToCore(
     uartTask,
     "UART",

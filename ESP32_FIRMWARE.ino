@@ -4,6 +4,7 @@
 
 #define ledPin 4
 
+//Initialize ESP32
 void setup() {
   initBuffers();
   initSemaphores();
