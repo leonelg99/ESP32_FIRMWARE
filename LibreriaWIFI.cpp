@@ -43,21 +43,24 @@ WiFiServer server(80);
 
 //This function is used to setup the ESP32 as an Access Point
 void startWiFi(){
-  pinMode(ledPin,OUTPUT);
-  WiFi.mode(WIFI_AP); //Optional
-  WiFi.softAPConfig(local_ip, gateway, subnet);
-  // You can remove the password parameter if you want the AP to be open.
-  // a valid password must have more than 7 characters
-  if (!WiFi.softAP(ssid, password)) {
-    log_e("Soft AP creation failed.");
-    while(1){
-      digitalWrite(ledPin,HIGH);
+  int estado = 0;
+  while(estado == 0){
+    pinMode(ledPin,OUTPUT);
+    WiFi.mode(WIFI_AP); //Optional
+    WiFi.softAPConfig(local_ip, gateway, subnet);
+    // You can remove the password parameter if you want the AP to be open.
+    // a valid password must have more than 7 characters
+    if (!WiFi.softAP(ssid, password)) {
+      log_e("Soft AP creation failed.");
+//      while(1){
+//        digitalWrite(ledPin,HIGH);
+//        delay(500);
+//        digitalWrite(ledPin,LOW);
+//        delay(500);
+//      };
       delay(500);
-      digitalWrite(ledPin,LOW);
-      delay(500);
-    };
+    } else estado = 1;
   }
- 
 }
 
 //This function is used to check if there is a client connected to the AP and return it
