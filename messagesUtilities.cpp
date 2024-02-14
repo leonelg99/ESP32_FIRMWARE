@@ -48,17 +48,6 @@ void processMessage(String message_aux, String *resp, String *message){
   
 }
 
-void processCamMessage(String message, String *cmd, String *value, String *value2){
-  int ind1;
-  int ind2;
-
-  ind1 = message.indexOf(':');  //finds location of first :
-  *cmd = message.substring(0, ind1);   //captures first data String
-  ind2 = message.indexOf(':', ind1+1);
-  *value = message.substring(ind1+1,ind2+1);
-  *value2 = message.substring(ind2+1, '\n');
-}
-
 //This function is used to initialize the buffers
 void initBuffers(){
   for(uint8_t i=0;i<MAX;i++){

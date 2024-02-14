@@ -8,17 +8,6 @@ static void videoTask (void *);
 
 //Function to Create all the main task
 void createTasks(){
-  
-  //The Task for the camera is going to run in core 1
-  xTaskCreatePinnedToCore(
-    videoTask,
-    "CAMARA",
-    STACK_SIZE_CAM,
-    NULL,
-    1,
-    NULL,
-    1
-  );
 
   //The Task for the server is going to run in core 0
   xTaskCreatePinnedToCore(
@@ -42,12 +31,6 @@ void createTasks(){
     0
   );
   
-}
-
-//Camara Task
-static void videoTask (void *parameter){
-  //Serial.print("V");
-  //cameraExecute();
 }
 
 //Server Task

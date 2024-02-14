@@ -29,7 +29,6 @@ const int videoFramesizeSVGA = 7;
 const int videoQualityLow = 12;
 const int videoQualityHigh = 10;
 int framesize = videoFramesizeSVGA;
-
 httpd_handle_t stream_httpd = NULL;
 
 void setupLedFlash(int);
@@ -168,39 +167,8 @@ void cameraExecute(){
   }
 }
 
-//This functions is used to change the camera's resolution as required.
-//It toggles between medium (SVGA) and high resolution (UXGA)
-/*void changeResolution(){    
-  int int_framesize = videoFramesizeSVGA;
-  int int_quality = videoQualityLow;
-  if (framesize = videoFramesizeSVGA) {
-    int_framesize = videoFramesizeUXGA;
-    int_quality = videoQualityHigh;
-  } else {
-    int_framesize = videoFramesizeSVGA;
-    int_quality = videoQualityLow;
-  }
-  sensor_t * s = esp_camera_sensor_get();
-  s->set_framesize(s, (framesize_t)int_framesize);
-  //s->set_framesize(s, FRAMESIZE_SVGA);
-  s->set_quality(s, int_quality);
-  delay(200);
-
-  // flush
-  for (int i = 0; i < config.fb_count; i++) {
-    int retries = 3;
-    while (retries--) {
-      auto *fb = esp_camera_fb_get();
-      if (fb) {
-        esp_camera_fb_return(fb);
-        retries = 0;
-      } else {
-        ESP_LOGW(TAG, "camera returned null fb while flushing %d", i);
-        delay(500);
-      }
-    }
-  }
-}*/
+//This function is used to change the resolution of the camera during runtime
+//At the moment, it needs revision
 void changeResolution() {
     int int_framesize = videoFramesizeSVGA;
     int int_quality = videoQualityLow;
@@ -226,6 +194,7 @@ void changeResolution() {
     }
 }
 
+//This function is used to turn on/off a led
 void led(){
   if(!led_state){
     led_state=true;
