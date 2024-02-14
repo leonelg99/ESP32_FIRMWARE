@@ -97,9 +97,10 @@ void serverExecute(){
         saveInBufferUART(message);
       }
       else {
-        if(resp.equals("cam")){
-          client.print("Es un comando: "+resp);
-          changeResolution();
+        if(resp.equals("cam") || resp.equals("led")){
+          if(resp.equals("cam"))
+            changeResolution();
+          else led();
         }
         else{
           if(resp.equals("get")){

@@ -1,12 +1,11 @@
 #include "LibreriaUART.h"
 
-#define ledPin 4
 String msg;
 
 //This function is used to set the baud rate for the UART and turn on a LED
 void uartSetup(){
   Serial.begin(115200);
-  pinMode(ledPin,OUTPUT);
+  
 }
 
 //This function is used for the communication through UART
@@ -15,11 +14,8 @@ void uartSetup(){
 void uartStart(){
   while(1){
     if(Serial.available()){
-      digitalWrite(ledPin,HIGH);
       msg=Serial.readStringUntil('\n');
       saveInBufferWIFI(msg);
-      delay(200);
-      digitalWrite(ledPin,LOW);
     }
     if(getCommand(&msg)){
       Serial.println(msg);

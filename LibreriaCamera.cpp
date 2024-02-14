@@ -6,10 +6,13 @@
 #include "soc/rtc_cntl_reg.h"  //disable brownout problems
 #include "esp_http_server.h"
 #define PART_BOUNDARY "123456789000000000000987654321"
+#define ledPin 4
 
 static const char* _STREAM_CONTENT_TYPE = "multipart/x-mixed-replace;boundary=" PART_BOUNDARY;
 static const char* _STREAM_BOUNDARY = "\r\n--" PART_BOUNDARY "\r\n";
 static const char* _STREAM_PART = "Content-Type: image/jpeg\r\nContent-Length: %u\r\n\r\n";
+
+static bool led_state = false;
 
 //Constants and variables for the camera
   // 10 –> UXGA(1600×1200)
@@ -32,15 +35,15 @@ httpd_handle_t stream_httpd = NULL;
 void setupLedFlash(int);
 
 static esp_err_t stream_handler(httpd_req_t *);
-
+camera_config_t config;
 //This functions is used for the setup of the camera connected to the ESP32-CAM
 //It initializes the camera with the predefined configuration, such as pins, camera frame size and quality.
 //Also, it handles any initialization errors.
 void cameraSetup(){
+  pinMode(ledPin,OUTPUT);
 
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
   
-  camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
   config.pin_d0 = Y2_GPIO_NUM;
@@ -66,12 +69,12 @@ void cameraSetup(){
     config.frame_size = FRAMESIZE_SVGA;
     config.jpeg_quality = 5;
     config.fb_count = 3;
-    framesize = FRAMESIZE_SVGA;
+    framesize = 7;
   } else {
     config.frame_size = FRAMESIZE_SVGA;
     config.jpeg_quality = 12;
     config.fb_count = 1;
-    framesize = FRAMESIZE_SVGA;
+    framesize = 7;
   }
   
   // Camera init
@@ -167,7 +170,7 @@ void cameraExecute(){
 
 //This functions is used to change the camera's resolution as required.
 //It toggles between medium (SVGA) and high resolution (UXGA)
- void changeResolution(){    
+/*void changeResolution(){    
   int int_framesize = videoFramesizeSVGA;
   int int_quality = videoQualityLow;
   if (framesize = videoFramesizeSVGA) {
@@ -181,4 +184,54 @@ void cameraExecute(){
   s->set_framesize(s, (framesize_t)int_framesize);
   //s->set_framesize(s, FRAMESIZE_SVGA);
   s->set_quality(s, int_quality);
+  delay(200);
+
+  // flush
+  for (int i = 0; i < config.fb_count; i++) {
+    int retries = 3;
+    while (retries--) {
+      auto *fb = esp_camera_fb_get();
+      if (fb) {
+        esp_camera_fb_return(fb);
+        retries = 0;
+      } else {
+        ESP_LOGW(TAG, "camera returned null fb while flushing %d", i);
+        delay(500);
+      }
+    }
+  }
+}*/
+void changeResolution() {
+    int int_framesize = videoFramesizeSVGA;
+    int int_quality = videoQualityLow;
+    if (framesize = videoFramesizeSVGA) {
+      int_framesize = videoFramesizeUXGA;
+      int_quality = videoQualityHigh;
+    } else {
+      int_framesize = videoFramesizeSVGA;
+      int_quality = videoQualityLow;
+    }
+    // Detenemos la captura de la cámara
+    esp_camera_fb_return(esp_camera_fb_get());
+    delay(100);
+    // Configuramos la resolución deseada
+    config.frame_size = (framesize_t)int_framesize; // Puedes cambiar FRAMESIZE_QVGA a la resolución deseada
+    config.jpeg_quality = int_quality;  // Calidad JPEG (de 0 a 63)
+
+    // Inicializamos la cámara con la nueva configuración
+    esp_err_t err = esp_camera_init(&config);
+    if (err != ESP_OK) {
+      saveInBufferUART("ERROR: CAMBIO DE RESOLUCION - REINICIANDO");
+      cameraSetup();
+    }
+}
+
+void led(){
+  if(!led_state){
+    led_state=true;
+    digitalWrite(ledPin,HIGH);
+  } else {
+    led_state=false;
+    digitalWrite(ledPin,LOW);
+  }
 }

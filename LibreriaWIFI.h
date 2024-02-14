@@ -4,7 +4,7 @@
 #include <WiFiClient.h>
 //#include "LibreriaFreeRTOS.h"
 #include "messagesUtilities.h"
-#include "LibreriaCamara.h"
+#include "LibreriaCamera.h"
 
 void startWiFi(void);
 void serverSetup(void);
