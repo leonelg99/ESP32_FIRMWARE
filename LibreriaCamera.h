@@ -6,3 +6,4 @@
 
 void cameraSetup(void);
 void cameraExecute(void);
+void changeResolution(void);

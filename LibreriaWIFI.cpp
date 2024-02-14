@@ -32,7 +32,7 @@ const bool  hide_SSID      = false;                     // To disable SSID broad
 const int   max_connection = 1;                         // Maximum simultaneous connected clients on the AP
 */
 
-//COMANDOS
+//Variables to process commands
 String message_aux; //main captured String 
 String message;
 String resp; //String, cmd o cam
@@ -41,25 +41,29 @@ Command CMD;
 // Set web server port number to 80
 WiFiServer server(80);
 
-//Seput WiFi function
+//This function is used to setup the ESP32 as an Access Point
 void startWiFi(){
-  pinMode(ledPin,OUTPUT);
-  WiFi.mode(WIFI_AP); //Optional
-  WiFi.softAPConfig(local_ip, gateway, subnet);
-  // You can remove the password parameter if you want the AP to be open.
-  // a valid password must have more than 7 characters
-  if (!WiFi.softAP(ssid, password)) {
-    log_e("Soft AP creation failed.");
-    while(1){
-      digitalWrite(ledPin,HIGH);
+  int estado = 0;
+  while(estado == 0){
+    pinMode(ledPin,OUTPUT);
+    WiFi.mode(WIFI_AP); //Optional
+    WiFi.softAPConfig(local_ip, gateway, subnet);
+    // You can remove the password parameter if you want the AP to be open.
+    // a valid password must have more than 7 characters
+    if (!WiFi.softAP(ssid, password)) {
+      log_e("Soft AP creation failed.");
+//      while(1){
+//        digitalWrite(ledPin,HIGH);
+//        delay(500);
+//        digitalWrite(ledPin,LOW);
+//        delay(500);
+//      };
       delay(500);
-      digitalWrite(ledPin,LOW);
-      delay(500);
-    };
+    } else estado = 1;
   }
- 
 }
 
+//This function is used to check if there is a client connected to the AP and return it
 WiFiClient getClient(){
   WiFiClient client = server.available();
   if(client) return client;
@@ -79,6 +83,10 @@ void serverSetup(){
 
 }
 String MSG="";
+
+//This function is used to set the behaviour of the server 
+//If there is data avaliable from a client, it reads it and process it
+//It also checks who is the responsible to execute the command received (it could be the ESP32 or the MCU)
 void serverExecute(){
   while(1){
     WiFiClient client= getClient();
@@ -91,9 +99,7 @@ void serverExecute(){
       else {
         if(resp.equals("cam")){
           client.print("Es un comando: "+resp);
-          //Crear tarea de CAMARA y ejecutar comando
-          // processCamMessage(message, &command.cmd, &command.value, &command.value2);
-          // executeCam();
+          changeResolution();
         }
         else{
           if(resp.equals("get")){
@@ -108,5 +114,3 @@ void serverExecute(){
     vTaskDelay(2);
   }
 } 
-
-
