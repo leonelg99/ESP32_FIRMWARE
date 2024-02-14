@@ -46,7 +46,6 @@ static void videoTask (void *parameter){
 
 //Server Task
 static void conexionTask (void *parameter){
-
   serverExecute();
 }
 
