@@ -1,6 +1,5 @@
 #include "messagesUtilities.h"
 #define MAX 15
-#define ledPin 4
 //Buffers WIFI y UART
 String bufferWIFI[MAX];
 int indexWIFI_rx=0;
@@ -109,15 +108,12 @@ bool getMsg(String *msg){
   String str;
   if(xSemaphoreTake(semWIFI,(TickType_t)5)==pdTRUE){
     if(wifiFlag){
-      digitalWrite(ledPin,HIGH);
       wifiFlag--;
       str=bufferWIFI[indexWIFI_tx];
       indexWIFI_tx++;
       updateBufferWIFI();
       exito=1;
       *msg=str;
-      delay(500);
-      digitalWrite(ledPin,HIGH);
     }
     xSemaphoreGive(semWIFI);
   }
